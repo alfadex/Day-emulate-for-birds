@@ -1,4 +1,10 @@
-
+/*
+Όταν ξεκινάει να ξημερώνει στις 7:00, η επαφή του timer γίνεται 0V και ανάβει το ενδεικτικό led του timer.Απο αυτή τη στιγμή
+ξεκινάει να ανάβει η λάμπα πυρακτώσεως απο το 0% στο 100% μέσα σε 20 λεπτά.Όταν ανάψει στο full, σβήνει και αμέσως ανάβει η 
+λάμπα φθορίου κάνοντας εξομοίση το φως του ήλιου. Στις 19:00 σβήνει η λάμπα πυρακτώσεως και αμέσως ανάβει μια λάμπα νυκτός
+η οποιία εξωμοιώνει το φως του φεγγαρίου.Την αλλη μέρα το πρωι, σβήνει το λαμπάκι νυκτός και ξαναξεκινάει η πυρακτώσεως 
+τον ίδιο κύκλο για το ξημέρωμα.
+*/
 
 const byte ledFade = 9;                   // pin για ρύθμηση φωτεινότητας λάμπας πυρακτώσεως
 const byte buttonPin = 2;                 // εντολή απο το μετρητή - ρολοι
@@ -11,13 +17,14 @@ const byte LedDay = 5;                    // led ημέρας για λαμπα 
 const byte Lednyxtoma = 6;                // led όταν βραδιαζει
 const byte Lednight = 4;                  // led για μεσάνυχτα
 int buttonState = 0;
+int timer;
 
 int kshmeroma() {                         // εδω ξεκινάει να αναβει η λάμπα πυρακτώσεως για κάποια λετπά
   digitalWrite(relaynight, LOW);          // σβήνει το relay για τη λάμπα νυκτός
   while (count > 2) {                     // ξεκινάει απο το 255(σβηστή)έως το 2 που είναι τερμα αναμένη
     count--;
     analogWrite(ledFade,        count);
-    delay(30);
+    delay(4900);                          //καθε step απο τα 250,έχει 4,9sec καθυστέρηση 4,9x250=1225sec / 60 = 20.4 λεπτά
     Serial.println(count);
     digitalWrite(LedMorning,    HIGH);    // ανάβει το led morning
     digitalWrite(LedDay,        LOW);     // σβήνει το led day
@@ -37,7 +44,7 @@ int nyxtoma() {                           // εδω ξεκιναει να σβή
   while ( count < 254) {                  // ξεκινάει απο το 1(τέρμα αναμένη) έως το 253 που είναι σβηστή
     count++;
     analogWrite(ledFade,        count);
-    delay(30);
+    delay(4900);                          //καθε step απο τα 250,έχει 4,9sec καθυστέρηση 4,9x250=1225sec / 60 = 20.4 λεπτά
     digitalWrite(relayFthoriou, LOW);     // σβήνει το ρελε για τη λαμπα φθορίου
     digitalWrite(LedDay,        LOW);     // σβήνει το led day
     digitalWrite(Lednyxtoma,    HIGH);    // ανάβει το led nightfall
@@ -53,6 +60,7 @@ int nyxtoma() {                           // εδω ξεκιναει να σβή
 }
 
 void setup() {
+
   count = 255;                            // μεταβλητή για πυρακτώσεως. 255=σβηστή  0=αναμένη
   Serial.begin(9600);
   pinMode(buttonPin, INPUT);              // διακόπτης απο timer.Όταν ανάβει το led του timer, έχω buttonStatelow αλλιώς high
