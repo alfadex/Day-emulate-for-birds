@@ -15,3 +15,6 @@ Bird timer Switch v.2
 https://alfadex.com/2015/03/bird-timer-switch-v-2/
 
 Code for this project refer to v.2
+
+video
+https://youtu.be/kFFZ-1XAeRA
