@@ -1,6 +1,6 @@
 # Day-light-emulate-for-birds
 
-How it work
+Operation of the project
 https://github.com/alfadex/Day-emulate-for-birds/wiki
 
 
